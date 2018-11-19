@@ -1,5 +1,5 @@
 {
-  "name": "differ",
+  "name": "spb-differ",
   "version": "1.0.0",
   "description": "second project of hexlet",
   "bin": {
