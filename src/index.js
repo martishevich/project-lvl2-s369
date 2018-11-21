@@ -29,7 +29,7 @@ const convertDiffToString = (diff) => {
 export default (path1, path2) => {
   const obj1 = getObject(path1);
   const obj2 = getObject(path2);
-  const allKeys = Array.from([...new Set([...Object.keys(obj1), ...Object.keys(obj2)])]);
+  const allKeys = _.union(Object.keys(obj1), Object.keys(obj2));
   const diff = allKeys.reduce((acc, key) => {
     let result = {};
     if (obj1[key] === obj2[key]) {
