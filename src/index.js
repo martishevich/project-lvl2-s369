@@ -3,27 +3,31 @@ import _ from 'lodash';
 
 const getObject = path => JSON.parse(readFileSync(path, 'utf8'));
 
-const getLineFromDiff = (acc, item) => {
-  let line;
-  if (item.state === 'same') {
-    line = `\n    ${item.key}: ${item.value}`;
-  }
-  if (item.state === 'changed') {
-    line = `\n  + ${item.key}: ${item.newValue}`;
-    line += `\n  - ${item.key}: ${item.oldValue}`;
-  }
-  if (item.state === 'new') {
-    line = `\n  + ${item.key}: ${item.value}`;
-  }
-  if (item.state === 'deleted') {
-    line = `\n  - ${item.key}: ${item.value}`;
-  }
-  return acc + line;
-};
+const linesDiff = [
+  {
+    condition: item => item.state === 'same',
+    getLine: item => `    ${item.key}: ${item.value}`,
+  },
+  {
+    condition: item => item.state === 'changed',
+    getLine: item => `  + ${item.key}: ${item.newValue}\n  - ${item.key}: ${item.oldValue}`,
+  },
+  {
+    condition: item => item.state === 'new',
+    getLine: item => `  + ${item.key}: ${item.value}`,
+  },
+  {
+    condition: item => item.state === 'deleted',
+    getLine: item => `  - ${item.key}: ${item.value}`,
+  },
+];
 
 const convertDiffToString = (diff) => {
-  const stringDiff = diff.reduce(getLineFromDiff, '{');
-  return `${stringDiff}\n}`;
+  const stringDiff = diff.map((item) => {
+    const { getLine } = linesDiff.find(({ condition }) => condition(item));
+    return getLine(item);
+  }).join('\n');
+  return `{\n${stringDiff}\n}\n`;
 };
 
 export default (path1, path2) => {
