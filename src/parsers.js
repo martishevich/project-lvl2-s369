@@ -1,10 +1,12 @@
 import { readFileSync } from 'fs';
 import { extname } from 'path';
 import { safeLoad } from 'js-yaml';
+import { decode } from 'ini';
 
 const extFunctions = {
   '.json': JSON.parse,
   '.yml': safeLoad,
+  '.ini': decode,
 };
 
 const getFunctionByType = type => extFunctions[type];
