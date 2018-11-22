@@ -10,7 +10,7 @@ test('JSON', () => {
 });
 
 test('YML', () => {
-  const result = genDiff(getFixturePath('before.yml'), getFixturePath('after.yml  '));
+  const result = genDiff(getFixturePath('before.yml'), getFixturePath('after.yml'));
   const expected = readFileSync(getFixturePath('result'), 'utf8');
   expect(result).toBe(expected);
 });
