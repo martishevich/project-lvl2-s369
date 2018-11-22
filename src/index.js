@@ -22,6 +22,29 @@ const linesDiff = [
   },
 ];
 
+const ast = [
+  {
+    condition: (obj1, obj2, key) => obj1[key] === obj2[key],
+    state: 'same',
+    values: (obj1, obj2, key) => ({ value: obj1[key] }),
+  },
+  {
+    condition: (obj1, obj2, key) => _.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key],
+    state: 'changed',
+    values: (obj1, obj2, key) => ({ oldValue: obj1[key], newValue: obj2[key] }),
+  },
+  {
+    condition: (obj1, obj2, key) => !_.has(obj1, key) && _.has(obj2, key),
+    state: 'new',
+    values: (obj1, obj2, key) => ({ value: obj2[key] }),
+  },
+  {
+    condition: (obj1, obj2, key) => _.has(obj1, key) && !_.has(obj2, key),
+    state: 'deleted',
+    values: (obj1, obj2, key) => ({ value: obj1[key] }),
+  },
+];
+
 const convertDiffToString = (diff) => {
   const stringDiff = diff.map((item) => {
     const { getLine } = linesDiff.find(({ condition }) => condition(item));
@@ -34,38 +57,11 @@ export default (path1, path2) => {
   const obj1 = getObject(path1);
   const obj2 = getObject(path2);
   const allKeys = _.union(Object.keys(obj1), Object.keys(obj2));
-  const diff = allKeys.reduce((acc, key) => {
-    let result = {};
-    if (obj1[key] === obj2[key]) {
-      result = {
-        state: 'same',
-        key,
-        value: obj1[key],
-      };
-    }
-    if (_.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key]) {
-      result = {
-        state: 'changed',
-        key,
-        oldValue: obj1[key],
-        newValue: obj2[key],
-      };
-    }
-    if (!_.has(obj1, key) && _.has(obj2, key)) {
-      result = {
-        state: 'new',
-        key,
-        value: obj2[key],
-      };
-    }
-    if (_.has(obj1, key) && !_.has(obj2, key)) {
-      result = {
-        state: 'deleted',
-        key,
-        value: obj1[key],
-      };
-    }
-    return [...acc, result];
-  }, []);
+
+  const diff = allKeys.map((key) => {
+    const { state, values } = ast.find(({ condition }) => condition(obj1, obj2, key));
+    return { key, state, ...values(obj1, obj2, key) };
+  });
+  console.log(diff);
   return convertDiffToString(diff);
 };
