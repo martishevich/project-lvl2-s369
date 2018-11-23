@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import parser from './parsers';
+import parse from './parsers';
 
 const linesDiff = [
   {
@@ -52,8 +52,8 @@ const convertDiffToString = (diff) => {
 };
 
 export default (path1, path2) => {
-  const obj1 = parser(path1);
-  const obj2 = parser(path2);
+  const obj1 = parse(path1);
+  const obj2 = parse(path2);
   const allKeys = _.union(Object.keys(obj1), Object.keys(obj2));
 
   const diff = allKeys.map((key) => {
