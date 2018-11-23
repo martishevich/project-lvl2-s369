@@ -3,19 +3,19 @@ import parse from './parsers';
 
 const linesDiff = [
   {
-    condition: item => item.state === 'same',
+    condition: item => item.type === 'same',
     getLine: item => `    ${item.key}: ${item.value}`,
   },
   {
-    condition: item => item.state === 'changed',
+    condition: item => item.type === 'changed',
     getLine: item => `  + ${item.key}: ${item.newValue}\n  - ${item.key}: ${item.oldValue}`,
   },
   {
-    condition: item => item.state === 'new',
+    condition: item => item.type === 'new',
     getLine: item => `  + ${item.key}: ${item.value}`,
   },
   {
-    condition: item => item.state === 'deleted',
+    condition: item => item.type === 'deleted',
     getLine: item => `  - ${item.key}: ${item.value}`,
   },
 ];
@@ -23,22 +23,22 @@ const linesDiff = [
 const ast = [
   {
     condition: (obj1, obj2, key) => obj1[key] === obj2[key],
-    state: 'same',
+    type: 'same',
     values: (obj1, obj2, key) => ({ value: obj1[key] }),
   },
   {
     condition: (obj1, obj2, key) => _.has(obj1, key) && _.has(obj2, key) && obj1[key] !== obj2[key],
-    state: 'changed',
+    type: 'changed',
     values: (obj1, obj2, key) => ({ oldValue: obj1[key], newValue: obj2[key] }),
   },
   {
     condition: (obj1, obj2, key) => !_.has(obj1, key) && _.has(obj2, key),
-    state: 'new',
+    type: 'new',
     values: (obj1, obj2, key) => ({ value: obj2[key] }),
   },
   {
     condition: (obj1, obj2, key) => _.has(obj1, key) && !_.has(obj2, key),
-    state: 'deleted',
+    type: 'deleted',
     values: (obj1, obj2, key) => ({ value: obj1[key] }),
   },
 ];
@@ -57,8 +57,8 @@ export default (path1, path2) => {
   const allKeys = _.union(Object.keys(obj1), Object.keys(obj2));
 
   const diff = allKeys.map((key) => {
-    const { state, values } = ast.find(({ condition }) => condition(obj1, obj2, key));
-    return { key, state, ...values(obj1, obj2, key) };
+    const { type, values } = ast.find(({ condition }) => condition(obj1, obj2, key));
+    return { key, type, ...values(obj1, obj2, key) };
   });
   console.log(diff);
   return convertDiffToString(diff);
