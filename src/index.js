@@ -3,24 +3,12 @@ import _ from 'lodash';
 import { extname } from 'path';
 import parse from './parsers';
 
-const linesDiff = [
-  {
-    condition: item => item.type === 'same',
-    getLine: item => `    ${item.key}: ${item.value}`,
-  },
-  {
-    condition: item => item.type === 'changed',
-    getLine: item => `  + ${item.key}: ${item.newValue}\n  - ${item.key}: ${item.oldValue}`,
-  },
-  {
-    condition: item => item.type === 'new',
-    getLine: item => `  + ${item.key}: ${item.value}`,
-  },
-  {
-    condition: item => item.type === 'deleted',
-    getLine: item => `  - ${item.key}: ${item.value}`,
-  },
-];
+const linesDiff = {
+  same: item => `    ${item.key}: ${item.value}`,
+  changed: item => `  + ${item.key}: ${item.newValue}\n  - ${item.key}: ${item.oldValue}`,
+  new: item => `  + ${item.key}: ${item.value}`,
+  deleted: item => `  - ${item.key}: ${item.value}`,
+};
 
 const ast = [
   {
@@ -47,7 +35,7 @@ const ast = [
 
 const convertDiffToString = (diff) => {
   const stringDiff = diff.map((item) => {
-    const { getLine } = linesDiff.find(({ condition }) => condition(item));
+    const getLine = linesDiff[item.type];
     return getLine(item);
   }).join('\n');
   return `{\n${stringDiff}\n}\n`;
