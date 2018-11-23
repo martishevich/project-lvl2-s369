@@ -1,4 +1,6 @@
+import { readFileSync } from 'fs';
 import _ from 'lodash';
+import { extname } from 'path';
 import parse from './parsers';
 
 const linesDiff = [
@@ -52,8 +54,8 @@ const convertDiffToString = (diff) => {
 };
 
 export default (path1, path2) => {
-  const obj1 = parse(path1);
-  const obj2 = parse(path2);
+  const obj1 = parse(extname(path1), readFileSync(path1, 'utf8'));
+  const obj2 = parse(extname(path2), readFileSync(path2, 'utf8'));
   const allKeys = _.union(Object.keys(obj1), Object.keys(obj2));
 
   const diff = allKeys.map((key) => {
