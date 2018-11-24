@@ -26,3 +26,15 @@ test('JSON nested', () => {
   const expected = readFileSync(getFixturePath('resultNested'), 'utf8');
   expect(result).toBe(expected);
 });
+
+test('YML nested', () => {
+  const result = genDiff(getFixturePath('beforeNested.yml'), getFixturePath('afterNested.yml'));
+  const expected = readFileSync(getFixturePath('resultNested'), 'utf8');
+  expect(result).toBe(expected);
+});
+
+test('INI nested', () => {
+  const result = genDiff(getFixturePath('beforeNested.ini'), getFixturePath('afterNested.ini'));
+  const expected = readFileSync(getFixturePath('resultNested'), 'utf8');
+  expect(result).toBe(expected);
+});
