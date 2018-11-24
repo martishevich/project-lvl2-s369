@@ -7,7 +7,7 @@ const extFunctions = {
   '.ini': decode,
 };
 
-export default (extention, file) => {
+export default (extention, content) => {
   const parse = extFunctions[extention];
-  return parse(file);
+  return parse(content);
 };

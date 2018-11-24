@@ -20,3 +20,9 @@ test('INI', () => {
   const expected = readFileSync(getFixturePath('result'), 'utf8');
   expect(result).toBe(expected);
 });
+
+test('JSON nested', () => {
+  const result = genDiff(getFixturePath('beforeNested.json'), getFixturePath('afterNested.json'));
+  const expected = readFileSync(getFixturePath('resultNested'), 'utf8');
+  expect(result).toBe(expected);
+});
