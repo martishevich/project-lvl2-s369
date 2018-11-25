@@ -1,6 +1,6 @@
 {
   "name": "spb-differ",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "second project of hexlet",
   "main": "dist/index.js",
   "bin": {

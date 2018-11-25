@@ -38,3 +38,14 @@ test('INI nested', () => {
   const expected = readFileSync(getFixturePath('resultNested'), 'utf8');
   expect(result).toBe(expected);
 });
+
+test('JSON plain', () => {
+  const result = genDiff(getFixturePath('before.json'), getFixturePath('after.json'), 'plain');
+  const expected = readFileSync(getFixturePath('resultPlain'), 'utf8');
+  expect(result).toBe(expected);
+});
+test('JSON nested plain', () => {
+  const result = genDiff(getFixturePath('beforeNested.json'), getFixturePath('afterNested.json'), 'plain');
+  const expected = readFileSync(getFixturePath('resultNestedPlain'), 'utf8');
+  expect(result).toBe(expected);
+});

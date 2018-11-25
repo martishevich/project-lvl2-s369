@@ -10,4 +10,6 @@
 ## Output diff from ini
 [![asciicast](https://asciinema.org/a/31uTN9pfW9vyAlvGk1c3CMACq.svg)](https://asciinema.org/a/31uTN9pfW9vyAlvGk1c3CMACq)
 ## Output diff for nested files(json, yml, ini)
-[![asciicast](https://asciinema.org/a/Bu3YmGuPFLSABqrlaQp1CzKb0.svg)](https://asciinema.org/a/Bu3YmGuPFLSABqrlaQp1CzKb0)<Paste>
+[![asciicast](https://asciinema.org/a/Bu3YmGuPFLSABqrlaQp1CzKb0.svg)](https://asciinema.org/a/Bu3YmGuPFLSABqrlaQp1CzKb0)
+## Output diff for plain files
+[![asciicast](https://asciinema.org/a/kMHMXSly0gs8sMo36RGWy78as.svg)](https://asciinema.org/a/kMHMXSly0gs8sMo36RGWy78as)
