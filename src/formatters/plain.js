@@ -10,7 +10,7 @@ const lines = {
   changed: (item, prevProperty) => `Property '${prevProperty}${item.key}' was updated. From ${processValue(item.oldValue)} to ${processValue(item.newValue)}`,
   new: (item, prevProperty) => `Property '${prevProperty}${item.key}' was added with value: ${processValue(item.value)}`,
   deleted: (item, prevProperty) => `Property '${prevProperty}${item.key}' was removed`,
-  nested: (item, prevProperty, func) => `${func(item.childrens, `${prevProperty}${item.key}.`)}`,
+  nested: (item, prevProperty, func) => `${func(item.children, `${prevProperty}${item.key}.`)}`,
 };
 
 const getPlain = (ast, prevProperty = '') => ast.map(item => lines[item.type](item, prevProperty, getPlain)).join('\n');

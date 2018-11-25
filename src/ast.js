@@ -4,7 +4,7 @@ const ast = [
   {
     condition: (obj1, obj2, key) => obj1[key] instanceof Object && obj2[key] instanceof Object,
     type: 'nested',
-    values: (value1, value2, generateAst) => ({ childrens: generateAst(value1, value2) }),
+    values: (value1, value2, generateAst) => ({ children: generateAst(value1, value2) }),
   },
   {
     condition: (obj1, obj2, key) => obj1[key] === obj2[key],
